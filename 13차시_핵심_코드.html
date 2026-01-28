@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>13차시 핵심 코드 보고서 (초심자용)</title>
+<style>
+:root{
+  --bg0:#070A12;
+  --bg1:#0B1020;
+  --card:#10192E;
+  --card2:#0E1629;
+  --line:#22304f;
+  --text:#EAF0FF;
+  --muted:#B7C3E6;
+  --accent:#7AA2FF;
+  --good:#37D67A;
+  --warn:#FFB020;
+  --bad:#FF5C5C;
+  --purple:#B592FF;
+  --cyan:#35D0FF;
+  --shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Apple SD Gothic Neo,Noto Sans KR,Arial,sans-serif;
+  background: radial-gradient(1200px 600px at 20% -10%, rgba(122,162,255,.18), transparent 55%),
+              radial-gradient(900px 500px at 90% 10%, rgba(53,208,255,.12), transparent 55%),
+              linear-gradient(180deg,var(--bg0),var(--bg1) 40%,var(--bg0));
+}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.container{max-width:1120px;margin:0 auto;padding:22px 16px 60px;}
+.grid{
+  display:grid;
+  grid-template-columns: 280px 1fr;
+  gap:16px;
+}
+@media (max-width: 980px){
+  .grid{grid-template-columns: 1fr;}
+  .toc{position:relative;top:auto}
+}
+header{
+  padding:18px 18px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(16,25,46,.85);
+  box-shadow: var(--shadow);
+}
+h1{margin:0 0 6px;font-size:28px;letter-spacing:-.2px}
+.meta{margin:0;color:var(--muted);font-size:14px;line-height:1.5}
+.badges{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+.badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 10px;border-radius:999px;
+  background:rgba(122,162,255,.14);
+  border:1px solid rgba(122,162,255,.28);
+  color:#dbe6ff;font-size:12px;
+}
+.dot{width:8px;height:8px;border-radius:50%;}
+.dot.good{background:var(--good)}
+.dot.cyan{background:var(--cyan)}
+.dot.purple{background:var(--purple)}
+.dot.warn{background:var(--warn)}
+.toc{
+  position:sticky;top:16px;
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(16,25,46,.70);
+  box-shadow: var(--shadow);
+}
+.toc h2{margin:0 0 10px;font-size:16px;color:#dbe6ff}
+.toc a{display:block;padding:8px 10px;border-radius:12px;color:var(--text);border:1px solid transparent}
+.toc a:hover{background:rgba(122,162,255,.10);border-color:rgba(122,162,255,.20)}
+.card{
+  padding:18px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(16,25,46,.70);
+  box-shadow: var(--shadow);
+  margin-bottom:16px;
+}
+.card h2{margin:0 0 10px;font-size:20px}
+.card h3{margin:16px 0 8px;font-size:16px;color:#dbe6ff}
+p{margin:8px 0;color:var(--text);line-height:1.7}
+ul{margin:8px 0 0 18px;color:var(--text)}
+li{margin:8px 0;color:var(--text);line-height:1.6}
+.callout{
+  display:flex;gap:12px;align-items:flex-start;
+  padding:12px 14px;border-radius:16px;border:1px solid var(--line);
+  background:rgba(7,11,21,.65);
+  margin:10px 0;
+}
+.icon{
+  width:34px;height:34px;border-radius:12px;
+  display:grid;place-items:center;
+  font-weight:800;
+}
+.icon.good{background:rgba(55,214,122,.16);border:1px solid rgba(55,214,122,.35);color:#bdf7d3}
+.icon.warn{background:rgba(255,176,32,.16);border:1px solid rgba(255,176,32,.35);color:#ffe0a6}
+.icon.cyan{background:rgba(53,208,255,.14);border:1px solid rgba(53,208,255,.30);color:#bdefff}
+.icon.purple{background:rgba(181,146,255,.14);border:1px solid rgba(181,146,255,.30);color:#eadcff}
+.small{color:var(--muted);font-size:13px}
+pre.code{
+  margin:10px 0 0;
+  padding:14px 14px;
+  border-radius:16px;
+  overflow:auto;
+  background:linear-gradient(180deg, #060913, #070b15);
+  border:1px solid #1e2a47;
+  color:#e8eefc;
+  font-size:13px;
+  line-height:1.55;
+}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+table{width:100%;border-collapse:separate;border-spacing:0;margin-top:10px;overflow:hidden;border-radius:16px}
+th,td{border:1px solid var(--line);padding:12px;vertical-align:top}
+th{background:rgba(122,162,255,.10);text-align:left}
+tr td:first-child{width:32%}
+hr.sep{border:0;border-top:1px dashed rgba(122,162,255,.25);margin:14px 0}
+footer{margin-top:10px;color:var(--muted);font-size:12px;text-align:center}
+kbd{
+  background:rgba(122,162,255,.12);
+  border:1px solid rgba(122,162,255,.22);
+  border-bottom-color:rgba(122,162,255,.35);
+  padding:2px 6px;border-radius:8px;font-size:12px;color:#dbe6ff;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>13차시 핵심 코드 보고서 <span class="badge"><span class="dot cyan"></span>초심자용</span></h1>
+  <p class="meta">작성일: 2026-01-29 · 목표: “코드를 따라 치면 그대로 동작” + “왜 그런지 설명까지”</p>
+  <div class="badges">
+    <span class="badge"><span class="dot good"></span>전처리 분리</span>
+    <span class="badge"><span class="dot warn"></span>시각화(permute)</span>
+    <span class="badge"><span class="dot purple"></span>FC 교체</span>
+    <span class="badge"><span class="dot cyan"></span>running_loss</span>
+  </div>
+</header>
+
+<div class="grid">
+  <nav class="toc">
+    <h2>목차</h2>
+<a href="#goal">학습 목표</a><a href="#core">핵심 개념(초심자용)</a><a href="#flow">전체 흐름 한 장 요약</a><a href="#codes">핵심 코드(주석 많음)</a><a href="#pitfalls">자주 나는 실수(에러)</a><a href="#template">보고서 포맷 템플릿</a>
+    <hr class="sep"/>
+    <div class="small">팁: 코드 블록은 그대로 복사해도 동작하도록 주석을 많이 달아놨어요.</div>
+  </nav>
+
+  <main>
+<section class="card" id="goal"><h2>학습 목표</h2>
+<div class="callout">
+  <div class="icon cyan">🎯</div>
+  <div>
+    <b>오늘 목표(이 4개만 확실히)</b>
+    <ul>
+      <li>train/test 전처리를 분리해서 “학습은 다양하게, 평가는 일정하게” 만든다.</li>
+      <li>정규화된 텐서를 사람 눈으로 보기 좋게 되돌려(imshow) 출력한다.</li>
+      <li>pretrained 모델을 불러오고 마지막 FC를 클래스 개수에 맞게 교체한다.</li>
+      <li>예측 인덱스 추출(torch.max/argmax)과 epoch 평균 loss(running_loss)를 정확히 계산한다.</li>
+    </ul>
+  </div>
+</div>
+<p class="small">※ “왜 shuffle을 다르게 하냐”, “permute가 왜 필요하냐”, “loss에 왜 batch_size를 곱하냐”가 오늘 핵심 포인트입니다.</p>
+</section>
+<section class="card" id="core"><h2>핵심 개념 (초심자용 설명)</h2><ul><li><b>전처리(train/test 분리)</b>: train에는 증강(랜덤 뒤집기 등)을 넣어 모델이 다양한 상황을 보게 함. test는 평가가 목적이므로 조건을 고정.</li><li><b>shuffle 옵션</b>: train은 shuffle=True로 섞어 학습 편향을 줄임. test는 보통 shuffle=False로 결과 확인/디버깅이 쉬움.</li><li><b>permute(1,2,0) 의미</b>: PyTorch 이미지 1장 텐서는 (C,H,W). matplotlib은 (H,W,C)를 기대 → 차원 순서 바꾸기.</li><li><b>FC 교체 의미</b>: 특징 추출부는 그대로(이미 학습됨). 마지막 분류기만 ‘우리 데이터 클래스 수’로 바꾸면 전이학습 가능.</li><li><b>예측 인덱스</b>: outputs는 (B,C). dim=1에서 최댓값 인덱스가 예측 클래스.</li><li><b>running_loss</b>: 배치 loss가 평균(mean)이면, loss×batch_size로 누적해야 ‘전체 평균’이 정확함(마지막 배치 크기 때문).</li><li><b>클래스별 정확도</b>: 배치 순서와 무관. labels[i](정답 클래스 번호)를 기준으로 그 클래스 칸(correct/total)에 누적.</li></ul></section><section class="card" id="flow"><h2>전체 흐름 한 장 요약</h2><div class="callout"><div class="icon good">✅</div><div><b>이 순서로만 보면 끝</b><div class="small">전처리 → 로더 → 모델 → 학습 → 평가 → 시각화</div></div></div><pre class='code'><code>1) Dataset 생성
+   ├─ train_transform (증강 포함)
+   └─ test_transform  (평가용 최소 전처리)
+
+2) DataLoader 생성
+   ├─ train_loader: shuffle=True
+   └─ test_loader : shuffle=False
+
+3) 모델 준비
+   ├─ pretrained 모델 로드 (resnet18)
+   └─ 마지막 fc 교체: nn.Linear(in_features, n_output)
+
+4) 학습(Train)
+   ├─ outputs = net(images)
+   ├─ loss = criterion(outputs, labels)
+   ├─ running_loss += loss * batch_size
+   └─ epoch_loss = running_loss / total_samples
+
+5) 평가(Eval)
+   ├─ predicted = argmax(outputs, dim=1)
+   ├─ c = (predicted == labels)  # 맞춤/틀림 마스크
+   └─ 클래스별로 correct/total 누적</code></pre></section><section class="card" id="codes"><h2>핵심 코드 (주석 많이)</h2><div class="callout"><div class="icon warn">⚠️</div><div><b>중요</b><p class="small">기존에 <kbd>plt.subplot</kbd>을 쓰면 축이 1개만 만들어집니다. 여러 칸은 <kbd>plt.subplots</kbd>가 맞아요.</p></div></div><h3>A. 전처리 분리 (Train vs Test)</h3><pre class='code'><code># ✅ 목표: 학습(train)과 평가(test)에 &quot;다른 전처리&quot;를 적용한다.
+# - train: 데이터 증강(augmentation)으로 다양한 형태를 보여줘 일반화 성능↑
+# - test : 평가용이므로 &quot;항상 같은 조건&quot;으로만 전처리(재현성↑)
+
+from torchvision import transforms
+
+train_transform = transforms.Compose([
+    transforms.Resize((224, 224)),          # 모델 입력 크기에 맞춤 (예: ResNet 계열)
+    transforms.RandomHorizontalFlip(p=0.5), # 좌우 반전 (확률 50%) → 증강
+    transforms.ToTensor(),                  # PIL 이미지 → Tensor(C,H,W), 값 범위 [0,1]
+    transforms.Normalize(mean=(0.5,0.5,0.5), std=(0.5,0.5,0.5))  # 값 범위 대략 [-1,1]
+])
+
+test_transform = transforms.Compose([
+    transforms.Resize((224, 224)),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=(0.5,0.5,0.5), std=(0.5,0.5,0.5))
+])</code></pre><h3>B. DataLoader 설정 (shuffle 차이)</h3><pre class='code'><code># ✅ 목표: 배치(batch)로 나눠서 학습시키고, train은 섞고(test는 보통 안 섞음)
+
+from torch.utils.data import DataLoader
+
+batch_size = 32
+
+train_loader = DataLoader(
+    train_dataset,
+    batch_size=batch_size,
+    shuffle=True,        # ✅ train은 섞기(중요): 학습이 한쪽 순서에 치우치지 않음
+    num_workers=2,
+    pin_memory=True
+)
+
+test_loader = DataLoader(
+    test_dataset,
+    batch_size=batch_size,
+    shuffle=False,       # ✅ test는 보통 섞지 않음: 결과 재현/디버깅 쉬움
+    num_workers=2,
+    pin_memory=True
+)</code></pre><h3>C. 이미지 출력 (denormalize + clamp + permute)</h3><pre class='code'><code># ✅ 목표: 정규화된 텐서를 &quot;사람이 보기 좋게&quot; 다시 [0,1]로 되돌려 출력한다.
+
+import torch
+import matplotlib.pyplot as plt
+
+images, labels = next(iter(train_loader))  # 배치 1개 꺼내기
+# images: (B, C, H, W)  예: (32, 3, 224, 224)
+# labels: (B,)
+
+# 1) 정규화 해제(denormalize)
+# Normalize(mean=0.5, std=0.5)로 했다면,
+# 원복: x = x_norm * 0.5 + 0.5
+images = images * 0.5 + 0.5
+
+# 2) 안전하게 값 범위를 [0,1]로 제한 (시각화 깨짐 방지)
+images = torch.clamp(images, 0, 1)
+
+# 3) 서브플롯 만들기 (⚠️ subplots가 맞음)
+num_images = 8
+fig, axis = plt.subplots(2, 4, figsize=(12, 6))
+axis = axis.ravel()  # (2,4) → (8,) 로 평탄화
+
+for i in range(num_images):
+    # images[i]는 (C,H,W) 형태 → matplotlib은 (H,W,C)를 선호
+    img = images[i].permute(1, 2, 0).cpu().numpy()
+
+    axis[i].imshow(img)
+    axis[i].set_title(f&quot;label = {labels[i].item()}&quot;, fontsize=12)
+    axis[i].axis(&quot;off&quot;)
+
+plt.tight_layout()
+plt.show()</code></pre><h3>D. Pretrained 모델 불러오기 + FC 교체</h3><pre class='code'><code># ✅ 목표: pretrained 모델(예: ResNet-18)을 불러오고,
+# 마지막 분류기(fc)를 &quot;우리 클래스 개수(n_output)&quot;에 맞게 교체한다.
+
+import torch
+import torch.nn as nn
+from torchvision import models
+
+# 1) 난수 고정(재현성)
+def torch_seed(seed=42):
+    import random, numpy as np
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+
+torch_seed(42)
+
+# 2) pretrained 모델 로드
+net = models.resnet18(pretrained=True)
+
+# 3) 기존 fc 입력 차원 확인 (ResNet-18은 보통 512)
+fc_in_features = net.fc.in_features
+print(&quot;기존 입력 차원:&quot;, fc_in_features)
+
+# 4) 마지막 출력 노드 수를 n_output(클래스 개수)로 교체
+n_output = 10  # 예: 클래스가 10개면 10
+net.fc = nn.Linear(fc_in_features, n_output)
+
+print(&quot;교체된 마지막 레이어:&quot;, net.fc)</code></pre><h3>E. 예측 클래스 인덱스 뽑기 (torch.max / argmax)</h3><pre class='code'><code># ✅ outputs는 보통 (B, C) = (배치크기, 클래스개수) 로짓/점수
+# 각 샘플마다 &quot;가장 큰 점수&quot;를 가진 클래스가 예측 클래스
+
+outputs = net(images)  # (B, C)
+
+# 방법 1) torch.max
+# _, predicted: predicted는 &quot;최댓값 위치의 인덱스&quot;
+_, predicted = torch.max(outputs, dim=1)
+
+# 방법 2) torch.argmax (더 직관적)
+predicted2 = torch.argmax(outputs, dim=1)
+
+# predicted / predicted2는 (B,) 형태, 각 값은 0~C-1 사이</code></pre><h3>F. running_loss 누적 &amp; epoch 평균 loss</h3><pre class='code'><code># ✅ 왜 loss.item()*batch_size를 더하나?
+# - loss가 &#x27;배치 평균(mean)&#x27;인 경우가 많음
+# - 마지막 배치는 batch_size가 작을 수 있어서,
+#   단순히 배치 평균끼리 평균내면 왜곡됨
+# - 그래서 &quot;샘플 개수로 가중치&quot;를 주기 위해 batch_size를 곱함
+
+running_loss = 0.0
+total = 0
+
+net.train()
+
+for images, labels in train_loader:
+    outputs = net(images)
+    loss = criterion(outputs, labels)   # 보통 reduction=&#x27;mean&#x27; → 배치 평균 손실
+
+    # ✅ 배치 평균 loss × 배치 샘플 수 → &#x27;배치 손실 합&#x27;처럼 누적
+    running_loss += loss.item() * images.size(0)
+
+    # ✅ 전체 샘플 수 누적
+    total += labels.size(0)
+
+epoch_loss = running_loss / total
+print(&quot;epoch 평균 loss =&quot;, epoch_loss)</code></pre><h3>G. 클래스별 정확도 집계 (label 기준으로 묶기)</h3><pre class='code'><code># ✅ 포인트:
+# &#x27;순서대로&#x27; 세는 게 아니라,
+# labels[i] (정답 클래스 번호) 를 보고 해당 클래스 칸에 누적한다.
+
+num_classes = len(classes)
+class_correct = [0] * num_classes
+class_total   = [0] * num_classes
+
+net.eval()
+with torch.no_grad():
+    for images, labels in test_loader:
+        outputs = net(images)
+
+        _, predicted = torch.max(outputs, dim=1)  # (B,)
+        c = (predicted == labels)                  # (B,) bool → 맞으면 True
+
+        for i in range(labels.size(0)):
+            label = labels[i].item()              # 정답 클래스 번호 (0~C-1)
+
+            class_correct[label] += int(c[i].item())  # True→1, False→0
+            class_total[label] += 1
+
+# 클래스별 정확도 출력
+for k in range(num_classes):
+    acc = class_correct[k] / max(1, class_total[k])
+    print(f&quot;{classes[k]}: {acc:.3f} ({class_correct[k]}/{class_total[k]})&quot;)</code></pre></section><section class="card" id="pitfalls"><h2>자주 나는 실수 (에러 메시지 기준)</h2><div class="callout"><div class="icon warn">🧯</div><div><b>에러는 “원인 → 해결”을 딱 2줄로 고정</b><p class="small">나중에 보고서 쓸 때도 이 표를 그대로 쓰면 정리 속도가 빨라집니다.</p></div></div><table><tr><th>증상(에러/현상)</th><th>원인</th><th>해결</th></tr><tr><td>IndexError: index 8 is out of bounds for axis 0 with size 8</td><td>2x4 subplot은 8칸인데 num_images=10으로 더 많이 그리려고 해서 발생</td><td>num_images=min(num_images,len(axis)) 또는 rows/cols를 num_images에 맞춰 동적으로 생성</td></tr><tr><td>classes[labels[i]]에서 에러/이상 동작</td><td>labels[i]가 tensor일 때 파이썬 리스트 인덱싱이 불안정할 수 있음</td><td>classes[labels[i].item()] 처럼 .item()으로 정수로 변환</td></tr><tr><td>.numpy() 변환 에러 (CUDA)</td><td>GPU 텐서는 바로 numpy로 변환 불가</td><td>img = tensor.cpu().numpy()</td></tr></table></section><section class="card" id="template"><h2>보고서 포맷 템플릿 (앞으로 계속 이대로)</h2><div class="callout"><div class="icon purple">📌</div><div><b>고정 포맷</b><p class="small">✅ 앞으로도 같은 포맷으로 쓰려면 아래 순서만 고정하면 됩니다.
+
+1) 제목/날짜/환경
+2) 학습 목표(2~4줄)
+3) 핵심 개념(불릿 6~10개, 초심자 기준으로 설명)
+4) 전체 흐름(1~2분 컷으로 보는 단계 요약)
+5) 핵심 코드(전처리 → 로더 → 모델 → 학습 → 평가 → 시각화 순서)
+6) 자주 나는 실수(에러 메시지, 원인, 해결)
+7) 다음 액션(다음 차시에서 확인할 것)
+
+아래 HTML 스켈레톤은 그대로 복붙해서 사용하세요.</p></div></div><pre class='code'><code>&lt;section class=&quot;card&quot; id=&quot;XX&quot;&gt;
+  &lt;h2&gt;XX차시 핵심 코드 보고서&lt;/h2&gt;
+  &lt;p class=&quot;meta&quot;&gt;작성일: YYYY-MM-DD · 환경: PyTorch/torchvision · 모델: (예: ResNet-18)&lt;/p&gt;
+
+  &lt;div class=&quot;callout&quot;&gt;
+    &lt;div class=&quot;icon cyan&quot;&gt;🎯&lt;/div&gt;
+    &lt;div&gt;
+      &lt;b&gt;학습 목표&lt;/b&gt;
+      &lt;ul&gt;
+        &lt;li&gt;...&lt;/li&gt;
+        &lt;li&gt;...&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;h3&gt;핵심 개념&lt;/h3&gt;
+  &lt;ul&gt;
+    &lt;li&gt;...&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3&gt;전체 흐름&lt;/h3&gt;
+  &lt;pre class=&quot;code&quot;&gt;&lt;code&gt;...&lt;/code&gt;&lt;/pre&gt;
+
+  &lt;h3&gt;핵심 코드&lt;/h3&gt;
+  &lt;pre class=&quot;code&quot;&gt;&lt;code&gt;...&lt;/code&gt;&lt;/pre&gt;
+
+  &lt;h3&gt;자주 나는 실수&lt;/h3&gt;
+  &lt;table&gt;
+    &lt;tr&gt;&lt;th&gt;증상&lt;/th&gt;&lt;th&gt;원인&lt;/th&gt;&lt;th&gt;해결&lt;/th&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;...&lt;/td&gt;&lt;td&gt;...&lt;/td&gt;&lt;td&gt;...&lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;
+
+  &lt;h3&gt;다음 액션&lt;/h3&gt;
+  &lt;ul&gt;
+    &lt;li&gt;...&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/section&gt;</code></pre></section>
+<footer>
+  <p>단일 HTML(내장 CSS) 파일입니다. GitHub Pages로 올려도 그대로 스타일이 유지됩니다.</p>
+</footer>
+
+  </main>
+</div>
+</div>
+</body>
+</html>
