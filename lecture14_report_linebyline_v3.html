@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>14차시 전이학습 리포트 (라인별 해설)</title>
+<style>:root{
+  --bg0:#070A12;
+  --bg1:#0B1020;
+  --card:#10192E;
+  --card2:#0E1629;
+  --line:#22304f;
+  --text:#EAF0FF;
+  --muted:#B7C3E6;
+  --accent:#7AA2FF;
+  --good:#37D67A;
+  --warn:#FFB020;
+  --bad:#FF5C5C;
+  --purple:#B592FF;
+  --cyan:#35D0FF;
+  --shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Apple SD Gothic Neo,Noto Sans KR,Arial,sans-serif;
+  background: radial-gradient(1200px 600px at 20% -10%, rgba(122,162,255,.18), transparent 55%),
+              radial-gradient(900px 500px at 90% 10%, rgba(53,208,255,.12), transparent 55%),
+              linear-gradient(180deg,var(--bg0),var(--bg1) 40%,var(--bg0));
+}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.container{max-width:1120px;margin:0 auto;padding:22px 16px 60px;}
+.grid{
+  display:grid;
+  grid-template-columns: 280px 1fr;
+  gap:16px;
+}
+@media (max-width: 980px){
+  .grid{grid-template-columns: 1fr;}
+  .toc{position:relative;top:auto}
+}
+header{
+  padding:18px 18px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(16,25,46,.85);
+  box-shadow: var(--shadow);
+}
+h1{margin:0 0 6px;font-size:28px;letter-spacing:-.2px}
+.meta{margin:0;color:var(--muted);font-size:14px;line-height:1.5}
+.badges{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+.badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 10px;border-radius:999px;
+  background:rgba(122,162,255,.14);
+  border:1px solid rgba(122,162,255,.28);
+  color:#dbe6ff;font-size:12px;
+}
+.dot{width:8px;height:8px;border-radius:50%;}
+.dot.good{background:var(--good)}
+.dot.cyan{background:var(--cyan)}
+.dot.purple{background:var(--purple)}
+.dot.warn{background:var(--warn)}
+.toc{
+  position:sticky;top:16px;
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(16,25,46,.70);
+  box-shadow: var(--shadow);
+}
+.toc h2{margin:0 0 10px;font-size:16px;color:#dbe6ff}
+.toc a{display:block;padding:8px 10px;border-radius:12px;color:var(--text);border:1px solid transparent}
+.toc a:hover{background:rgba(122,162,255,.10);border-color:rgba(122,162,255,.20)}
+.card{
+  padding:18px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(16,25,46,.70);
+  box-shadow: var(--shadow);
+  margin-bottom:16px;
+}
+.card h2{margin:0 0 10px;font-size:20px}
+.card h3{margin:16px 0 8px;font-size:16px;color:#dbe6ff}
+p{margin:8px 0;color:var(--text);line-height:1.7}
+ul{margin:8px 0 0 18px;color:var(--text)}
+li{margin:8px 0;color:var(--text);line-height:1.6}
+.callout{
+  display:flex;gap:12px;align-items:flex-start;
+  padding:12px 14px;border-radius:16px;border:1px solid var(--line);
+  background:rgba(7,11,21,.65);
+  margin:10px 0;
+}
+.icon{
+  width:34px;height:34px;border-radius:12px;
+  display:grid;place-items:center;
+  font-weight:800;
+}
+.icon.good{background:rgba(55,214,122,.16);border:1px solid rgba(55,214,122,.35);color:#bdf7d3}
+.icon.warn{background:rgba(255,176,32,.16);border:1px solid rgba(255,176,32,.35);color:#ffe0a6}
+.icon.cyan{background:rgba(53,208,255,.14);border:1px solid rgba(53,208,255,.30);color:#bdefff}
+.icon.purple{background:rgba(181,146,255,.14);border:1px solid rgba(181,146,255,.30);color:#eadcff}
+.small{color:var(--muted);font-size:13px}
+pre.code{
+  margin:10px 0 0;
+  padding:14px 14px;
+  border-radius:16px;
+  overflow:auto;
+  background:linear-gradient(180deg, #060913, #070b15);
+  border:1px solid #1e2a47;
+  color:#e8eefc;
+  font-size:13px;
+  line-height:1.55;
+}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+table{width:100%;border-collapse:separate;border-spacing:0;margin-top:10px;overflow:hidden;border-radius:16px}
+th,td{border:1px solid var(--line);padding:12px;vertical-align:top}
+th{background:rgba(122,162,255,.10);text-align:left}
+tr td:first-child{width:32%}
+hr.sep{border:0;border-top:1px dashed rgba(122,162,255,.25);margin:14px 0}
+footer{margin-top:10px;color:var(--muted);font-size:12px;text-align:center}
+kbd{
+  background:rgba(122,162,255,.12);
+  border:1px solid rgba(122,162,255,.22);
+  border-bottom-color:rgba(122,162,255,.35);
+  padding:2px 6px;border-radius:8px;font-size:12px;color:#dbe6ff;
+}</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>14차시 전이학습 리포트 <span class="badge"><span class="dot cyan"></span>라인별 해설</span></h1>
+  <p class="meta">작성일: 2026-01-29 · 목표: 코드 한 줄씩 이해 + 실험 비교까지</p>
+  <div class="badges">
+    <span class="badge"><span class="dot good"></span>Transfer</span>    <span class="badge"><span class="dot purple"></span>Freeze/Partial/Full</span>    <span class="badge"><span class="dot cyan"></span>Staged LR</span>    <span class="badge"><span class="dot warn"></span>Aug strength</span>  </div>
+</header>
+
+<div class="grid">
+  <nav class="toc">
+    <h2>목차</h2>
+<a href="#intro">이번 차시에서 진짜 중요한 것</a><a href="#transfer">전이학습 vs 파인튜닝 (코드로 구분)</a><a href="#modes">Freeze / Partial / Full (어디까지 학습?)</a><a href="#stagedlr">단계적 학습률 (왜 2단계로 나누나?)</a><a href="#aug">증강 강도(약/중/강)와 성능 비교</a><a href="#train">학습/평가 루프에서 ‘무엇이 계산되는가’</a><a href="#template">실험 결과 정리 템플릿</a>
+    <hr class="sep"/>
+    <div class="small">읽는 순서: Transfer→Freeze/Partial/Full→Staged LR→Aug→Train/Eval→결과표</div>
+  </nav>
+
+  <main>
+<section class="card" id="intro">
+<h2>이번 차시에서 진짜 중요한 것</h2>
+<div class="callout"><div class="icon cyan">🧭</div><div><b>이 리포트 사용법</b><p class="small">코드 아래 표를 보고 “한 줄 의미”를 먼저 이해한 뒤, ‘왜 핵심인지’ 문단을 읽으면 됩니다.</p></div></div>
+<p class="small">이 리포트는 “코드만 나열”이 아니라,
+**코드 한 줄마다 (1) 무엇을 하는지 (2) 옵션이 뭔지 (3) 왜 핵심인지**를 붙여서 초심자도 따라가게 만든 버전이다.
+
+14차시의 핵심은 4가지다.
+1) Freeze / Partial / Full: 어디까지 학습할지 결정
+2) 전이학습 vs 파인튜닝: FC만 학습인지, backbone도 학습인지
+3) 단계적 학습률: FC를 먼저 큰 LR로, backbone은 작은 LR로
+4) 증강 강도 비교: 약/중/강 증강에서 성능이 어떻게 달라지는지</p>
+</section><section class="card" id="transfer">
+<h2>전이학습 vs 파인튜닝 (코드로 구분)</h2>
+<div class="callout"><div class="icon good">✅</div><div><b>전이학습 기본형</b><p class="small">pretrained 로드 → FC 교체 → (대개 Freeze로 시작)</p></div></div>
+<pre class="code"><code>from torchvision import models
+import torch.nn as nn
+
+net = models.resnet18(pretrained=True)
+
+fc_in = net.fc.in_features
+n_output = 10
+net.fc = nn.Linear(fc_in, n_output)</code></pre>
+<table><tr><th style='width:42%'>코드 한 줄</th><th>의미(초심자용)</th></tr><tr><td><code>net = models.resnet18(pretrained=True)</code></td><td>ImageNet 등으로 미리 학습된 ResNet-18 가중치를 불러온다(=전이학습 시작).</td></tr><tr><td><code>fc_in = net.fc.in_features</code></td><td>기존 FC가 받는 입력 차원을 확인한다(ResNet-18은 보통 512).</td></tr><tr><td><code>net.fc = nn.Linear(fc_in, n_output)</code></td><td>우리 데이터의 클래스 수(n_output)에 맞게 ‘마지막 분류기(FC)’를 교체한다(필수).</td></tr></table>
+<div class="callout"><div class="icon purple">💡</div><div><b>왜 핵심인지</b><p class="small">왜 핵심인가?
+- backbone(특징추출부)은 이미 ‘일반적인 시각 특징(엣지/패턴/형태)’을 잘 배움
+- 데이터가 적을 때 처음부터 학습보다 훨씬 빠르고 안정적
+- 대신 “FC 교체 + 학습 범위(Freeze/Partial/Full) 선택”이 성능을 좌우함</p></div></div>
+</section><section class="card" id="modes">
+<h2>Freeze / Partial / Full (어디까지 학습?)</h2>
+<div class="callout"><div class="icon purple">🧊</div><div><b>결정 1: 학습 범위</b><p class="small">가장 중요한 실험 축: 업데이트할 파라미터의 범위</p></div></div>
+<pre class="code"><code># (1) Freeze: backbone 고정, FC만 학습
+for p in net.parameters():
+    p.requires_grad = False
+for p in net.fc.parameters():
+    p.requires_grad = True
+
+# (2) Partial: 마지막 블록 + FC 학습 (예: ResNet layer4)
+for p in net.layer4.parameters():
+    p.requires_grad = True
+
+# (3) Full: 전체 학습
+for p in net.parameters():
+    p.requires_grad = True</code></pre>
+<table><tr><th style='width:42%'>코드 한 줄</th><th>의미(초심자용)</th></tr><tr><td><code>for p in net.parameters(): p.requires_grad = False</code></td><td>모든 파라미터 업데이트를 막는다(=backbone 포함 전부 고정).</td></tr><tr><td><code>for p in net.fc.parameters(): p.requires_grad = True</code></td><td>FC만 학습 가능하게 풀어준다(전이학습 기본 형태).</td></tr><tr><td><code>for p in net.layer4.parameters(): p.requires_grad = True</code></td><td>마지막 블록(layer4)만 추가로 학습(=partial fine-tuning).</td></tr><tr><td><code>for p in net.parameters(): p.requires_grad = True</code></td><td>전체를 학습 가능하게 만든다(=full fine-tuning).</td></tr></table>
+<div class="callout"><div class="icon warn">⭐</div><div><b>왜 핵심인지</b><p class="small">왜 핵심인가?
+- Freeze: 가장 안정적(데이터 적을 때 과적합↓), 빠름
+- Partial: 성능/안정성 균형이 좋아 가장 많이 씀(고수준 특징만 우리 데이터에 맞게 조정)
+- Full: 표현력은 최대지만 LR 튜닝이 어렵고 과적합/불안정 가능</p></div></div>
+</section><section class="card" id="stagedlr">
+<h2>단계적 학습률 (왜 2단계로 나누나?)</h2>
+<div class="callout"><div class="icon cyan">📉</div><div><b>결정 2: 학습률 운영</b><p class="small">FC는 빠르게, backbone은 조심스럽게</p></div></div>
+<pre class="code"><code>import torch.optim as optim
+
+# Phase 1) Freeze 상태에서 FC만 빠르게 학습 (LR 크게)
+for p in net.parameters(): p.requires_grad = False
+for p in net.fc.parameters(): p.requires_grad = True
+
+optimizer = optim.SGD(
+    filter(lambda p: p.requires_grad, net.parameters()),
+    lr=1e-2, momentum=0.9, weight_decay=1e-4
+)
+
+# Phase 2) Partial 또는 Full로 확장 (LR 작게)
+for p in net.layer4.parameters(): p.requires_grad = True   # partial 예시
+optimizer = optim.SGD(
+    filter(lambda p: p.requires_grad, net.parameters()),
+    lr=1e-3, momentum=0.9, weight_decay=1e-4
+)</code></pre>
+<table><tr><th style='width:42%'>코드 한 줄</th><th>의미(초심자용)</th></tr><tr><td><code>filter(lambda p: p.requires_grad, net.parameters())</code></td><td>학습 가능한 파라미터만 optimizer에 넣는다(안 넣으면 freeze가 의미 없어짐).</td></tr><tr><td><code>lr=1e-2 (Phase1)</code></td><td>FC만 학습하므로 비교적 큰 LR도 안정적으로 가능(빠르게 적응).</td></tr><tr><td><code>lr=1e-3 (Phase2)</code></td><td>backbone을 건드리면 작은 LR 필수(기존 지식 파괴 방지).</td></tr></table>
+<div class="callout"><div class="icon good">⭐</div><div><b>왜 핵심인지</b><p class="small">왜 핵심인가?
+- pretrained 가중치는 이미 좋은 위치에 있음 → 큰 LR로 건드리면 ‘기존 지식이 망가짐(망각)’
+- 그래서 1단계(FC만)에서 빠르게 적응시키고,
+  2단계(backbone 일부/전체)에서 작은 LR로 조심스럽게 미세조정하는 게 안전하고 성능도 잘 나옴</p></div></div>
+</section><section class="card" id="aug">
+<h2>증강 강도(약/중/강)와 성능 비교</h2>
+<div class="callout"><div class="icon warn">🎛️</div><div><b>결정 3: 증강 강도</b><p class="small">강할수록 좋다 X → “균형점”이 핵심</p></div></div>
+<pre class="code"><code>from torchvision import transforms
+
+aug_weak = transforms.Compose([
+    transforms.Resize((224,224)),
+    transforms.RandomHorizontalFlip(p=0.5),
+    transforms.ToTensor(),
+    transforms.Normalize((0.5,0.5,0.5),(0.5,0.5,0.5)),
+])
+
+aug_medium = transforms.Compose([
+    transforms.Resize((256,256)),
+    transforms.RandomResizedCrop((224,224), scale=(0.8,1.0)),
+    transforms.RandomHorizontalFlip(p=0.5),
+    transforms.RandomRotation(10),
+    transforms.ToTensor(),
+    transforms.Normalize((0.5,0.5,0.5),(0.5,0.5,0.5)),
+])
+
+aug_strong = transforms.Compose([
+    transforms.Resize((256,256)),
+    transforms.RandomResizedCrop((224,224), scale=(0.6,1.0)),
+    transforms.RandomHorizontalFlip(p=0.5),
+    transforms.RandomRotation(15),
+    transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.05),
+    transforms.ToTensor(),
+    transforms.Normalize((0.5,0.5,0.5),(0.5,0.5,0.5)),
+    transforms.RandomErasing(p=0.25, scale=(0.02, 0.15)),
+])</code></pre>
+<table><tr><th style='width:42%'>코드 한 줄</th><th>의미(초심자용)</th></tr><tr><td><code>RandomHorizontalFlip(p=0.5)</code></td><td>50% 확률로 좌우 반전(가장 기본 증강).</td></tr><tr><td><code>RandomResizedCrop(..., scale=(0.8,1.0))</code></td><td>원본의 80~100% 영역을 랜덤 크롭 → medium 증강(너무 과하지 않게).</td></tr><tr><td><code>ColorJitter(...)</code></td><td>밝기/대비/채도를 흔들어 색 변화에 강해지게 함(강증강 요소).</td></tr><tr><td><code>RandomErasing(p=0.25, ...)</code></td><td>이미지 일부를 지워 가림(occlusion)에 강하게 하지만 과하면 학습이 어려워짐).</td></tr></table>
+<div class="callout"><div class="icon purple">⭐</div><div><b>왜 핵심인지</b><p class="small">왜 핵심인가?
+- 약한 증강: 학습은 쉽지만 과적합 위험
+- 강한 증강: 일반화에 도움될 수 있지만, 과하면 ‘데이터가 너무 달라져’ 성능이 떨어질 수도 있음
+- 그래서 약/중/강을 나눠서 “성능이 가장 좋은 균형점”을 찾는 것이 실험의 핵심</p></div></div>
+</section><section class="card" id="train">
+<h2>학습/평가 루프에서 ‘무엇이 계산되는가’</h2>
+<div class="callout"><div class="icon cyan">🧮</div><div><b>loss/acc가 어디서 나오나?</b><p class="small">여기 흐름을 정확히 알면 실수가 확 줄어듭니다.</p></div></div>
+<pre class="code"><code>running_loss = 0.0
+total = 0
+
+net.train()
+for images, labels in train_loader:
+    outputs = net(images)
+    loss = criterion(outputs, labels)
+
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+
+    running_loss += loss.item() * images.size(0)
+    total += labels.size(0)
+
+epoch_loss = running_loss / total
+
+net.eval()
+correct = 0
+total = 0
+with torch.no_grad():
+    for images, labels in test_loader:
+        outputs = net(images)
+        predicted = torch.argmax(outputs, dim=1)
+        correct += (predicted == labels).sum().item()
+        total += labels.size(0)
+acc = 100 * correct / total</code></pre>
+<table><tr><th style='width:42%'>코드 한 줄</th><th>의미(초심자용)</th></tr><tr><td><code>net.train()</code></td><td>드롭아웃/배치정규화가 ‘학습 모드’로 동작하게 함.</td></tr><tr><td><code>optimizer.zero_grad()</code></td><td>이전 배치의 gradient를 초기화(안 하면 누적돼서 학습이 망가짐).</td></tr><tr><td><code>loss.backward()</code></td><td>오차를 기준으로 gradient 계산(역전파).</td></tr><tr><td><code>optimizer.step()</code></td><td>계산된 gradient로 파라미터 업데이트.</td></tr><tr><td><code>running_loss += loss.item() * images.size(0)</code></td><td>배치 평균 loss × 배치 샘플 수로 누적(마지막 배치 크기가 달라도 공정한 평균).</td></tr><tr><td><code>with torch.no_grad()</code></td><td>평가에서는 gradient 계산을 꺼서 더 빠르고 메모리 절약.</td></tr><tr><td><code>predicted = torch.argmax(outputs, dim=1)</code></td><td>각 샘플에서 가장 큰 점수의 클래스 인덱스를 예측값으로 선택.</td></tr></table>
+<div class="callout"><div class="icon good">⭐</div><div><b>왜 핵심인지</b><p class="small">왜 핵심인가?
+- loss/acc가 ‘어디서 계산되는지’ 정확히 이해하면 디버깅이 쉬워짐
+- running_loss를 배치 크기로 가중 평균내는 방식은 매우 자주 쓰이는 정석</p></div></div>
+</section><section class="card" id="template">
+<h2>실험 결과 정리 템플릿</h2>
+<div class="callout"><div class="icon purple">🧾</div><div><b>보고서 퀄리티를 올리는 1줄 규칙</b><p class="small">“무엇을 바꿨는지”와 “결과(Acc)”를 표로 묶어라.</p></div></div>
+<table>
+<tr><th>실험명</th><th>Train Mode</th><th>Aug</th><th>Phase1 LR</th><th>Phase2 LR</th><th>Best Acc</th><th>해석(한 문장)</th></tr>
+<tr><td>freeze + weak</td><td>freeze</td><td>weak</td><td>1e-2</td><td>-</td><td>__</td><td>baseline(안정/빠름)</td></tr>
+<tr><td>partial + medium</td><td>partial</td><td>medium</td><td>1e-2</td><td>1e-3</td><td>__</td><td>권장 조합 후보</td></tr>
+<tr><td>full + medium</td><td>full</td><td>medium</td><td>1e-2</td><td>1e-3</td><td>__</td><td>튜닝 성공 시 최고점</td></tr>
+<tr><td>partial + strong</td><td>partial</td><td>strong</td><td>1e-2</td><td>1e-3</td><td>__</td><td>과증강이면 성능↓ 가능</td></tr>
+</table>
+<p class="small">각 실험에서 <b>Best Acc</b>를 채우고, <b>해석(한 문장)</b>만 붙이면 보고서가 완성됩니다.</p>
+</section>
+<footer>
+  <p>단일 HTML(내장 CSS) 파일입니다. GitHub Pages에 올리면 그대로 렌더링됩니다.</p>
+</footer>
+
+  </main>
+</div>
+</div>
+</body>
+</html>
