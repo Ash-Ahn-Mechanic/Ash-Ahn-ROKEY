@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="ko"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>15차시 리포트 v4 (3개 코드 차이 강조)</title>
+<style>
+:root{
+  --bg0:#070A12; --bg1:#0B1020; --card:#10192E; --line:#22304f;
+  --text:#EAF0FF; --muted:#B7C3E6; --accent:#7AA2FF;
+  --good:#37D67A; --warn:#FFB020; --purple:#B592FF; --cyan:#35D0FF;
+  --shadow:0 10px 30px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{margin:0;color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Apple SD Gothic Neo,Noto Sans KR,Arial,sans-serif;
+  background:radial-gradient(1200px 600px at 15% -10%, rgba(122,162,255,.16), transparent 55%),
+             radial-gradient(900px 500px at 90% 5%, rgba(53,208,255,.10), transparent 55%),
+             linear-gradient(180deg,var(--bg0),var(--bg1));
+}
+.container{max-width:1160px;margin:0 auto;padding:22px 16px 60px;}
+header{padding:18px;border:1px solid var(--line);border-radius:18px;background:rgba(16,25,46,.85);box-shadow:var(--shadow);}
+h1{margin:0 0 8px;font-size:26px;letter-spacing:-.2px}
+.meta{margin:0;color:var(--muted);font-size:14px;line-height:1.6}
+.grid{display:grid;grid-template-columns: 300px 1fr;gap:16px;margin-top:16px;}
+@media(max-width:980px){.grid{grid-template-columns:1fr}.toc{position:relative;top:auto}}
+.toc{position:sticky;top:16px;padding:14px;border:1px solid var(--line);border-radius:18px;background:rgba(16,25,46,.70);box-shadow:var(--shadow);}
+.toc h2{margin:0 0 10px;font-size:16px;color:#dbe6ff}
+.toc a{display:block;padding:8px 10px;border-radius:12px;color:var(--text);text-decoration:none;border:1px solid transparent}
+.toc a:hover{background:rgba(122,162,255,.10);border-color:rgba(122,162,255,.20)}
+.card{padding:18px;border:1px solid var(--line);border-radius:18px;background:rgba(16,25,46,.70);box-shadow:var(--shadow);margin-bottom:16px;}
+.card h2{margin:0 0 10px;font-size:20px}
+.card h3{margin:16px 0 8px;font-size:16px;color:#dbe6ff}
+.small{color:var(--muted);font-size:13px;line-height:1.65}
+p{margin:8px 0;line-height:1.75}
+hr.sep{border:0;border-top:1px dashed rgba(122,162,255,.25);margin:14px 0}
+.callout{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:16px;border:1px solid var(--line);background:rgba(7,11,21,.65);margin:10px 0;}
+.icon{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;font-weight:800;}
+.icon.cyan{background:rgba(53,208,255,.14);border:1px solid rgba(53,208,255,.30);color:#bdefff}
+.icon.purple{background:rgba(181,146,255,.14);border:1px solid rgba(181,146,255,.30);color:#eadcff}
+.icon.good{background:rgba(55,214,122,.16);border:1px solid rgba(55,214,122,.35);color:#bdf7d3}
+.icon.warn{background:rgba(255,176,32,.14);border:1px solid rgba(255,176,32,.35);color:#ffe0a8}
+pre.code{margin:10px 0 0;padding:14px 14px;border-radius:16px;overflow:auto;
+  background:linear-gradient(180deg,#060913,#070b15);border:1px solid #1e2a47;color:#e8eefc;font-size:13px;line-height:1.55;}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.tbl{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border-radius:16px;border:1px solid var(--line);margin-top:10px}
+.tbl th,.tbl td{border-top:1px solid var(--line);border-right:1px solid var(--line);padding:10px;vertical-align:top}
+.tbl th{background:rgba(122,162,255,.10);text-align:left}
+.tbl tr:first-child th{border-top:0}
+.tbl td:last-child,.tbl th:last-child{border-right:0}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;font-size:12px;border:1px solid rgba(122,162,255,.28);background:rgba(122,162,255,.14);color:#dbe6ff}
+.dot{width:8px;height:8px;border-radius:50%}
+.dot.cyan{background:var(--cyan)} .dot.purple{background:var(--purple)} .dot.good{background:var(--good)} .dot.warn{background:var(--warn)}
+.split2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:980px){.split2{grid-template-columns:1fr}}
+.panel{padding:12px;border-radius:16px;border:1px solid rgba(122,162,255,.22);background:rgba(7,11,21,.55)}
+.keybox{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:10px}
+@media(max-width:980px){.keybox{grid-template-columns:1fr}}
+.kcard{padding:12px;border-radius:16px;border:1px solid rgba(122,162,255,.22);background:rgba(7,11,21,.55)}
+.kcard h4{margin:0 0 6px;font-size:14px}
+footer{margin-top:10px;color:var(--muted);font-size:12px;text-align:center}
+.muted{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>15차시 리포트 v4 <span style="color:var(--accent)">3개 코드 차이 강조</span></h1>
+  <p class="meta">작성일: 2026-01-30 · 목표: “왜 3개가 다른지”가 첫 페이지부터 보이게 만들기(데이터/증강/모델/학습전략 중심)</p>
+  <div class="badges">
+    <span class="badge"><span class="dot good"></span>차이 비교표</span>
+    <span class="badge"><span class="dot warn"></span>증강 차이</span>
+    <span class="badge"><span class="dot cyan"></span>모델 교체</span>
+    <span class="badge"><span class="dot purple"></span>스케줄러/실무기법</span>
+  </div>
+</header>
+
+<div class="grid">
+  <nav class="toc">
+    <h2>목차</h2>
+    <a href='#diff'>3개 코드 차이 한눈에</a><a href='#01-custom-dl-imagefolder-vgg19-bn'>01) Custom DL + ImageFolder 전이학습(VGG19_BN)</a><a href='#02-cifar-10-resnet18'>02) CIFAR-10 ResNet18 파인튜닝</a><a href='#03-cifar-10-vgg19-bn'>03) CIFAR-10 VGG19_BN 파인튜닝(실무형)</a>
+    <hr class="sep"/>
+    <p class="small muted">읽기 추천: <b>비교표 → (03 실무형) → (02 ResNet) → (01 ImageFolder)</b></p>
+  </nav>
+
+  <main>
+    
+<section class="card" id="diff">
+  <h2>3개 코드가 “다르게 보이게” 만드는 핵심 비교표</h2>
+  <div class="callout"><div class="icon good">✅</div><div>
+    <p class="small"><b>결론부터</b>: 3개는 “전부 딥러닝 학습”이라 겉 흐름은 비슷하지만, <b>데이터/증강/모델/학습 최적화</b>가 서로 달라요.</p>
+    <p class="small">그래서 아래 표처럼 “차이를 먼저” 잡고 들어가야 리포트가 설득력 있어집니다.</p>
+  </div></div>
+  <table class='tbl'><tr><th>코드</th><th>데이터</th><th>스크래치 적합?</th><th>모델</th><th>학습/최적화</th><th>이 노트북만의 포인트</th></tr><tr><td>01 Custom DL</td><td>ImageFolder (사용자 폴더 경로)</td><td>부적합(대개 데이터가 제한적) → 전이학습 권장</td><td>VGG19_BN(pretrained) + classifier[6]를 2클래스로 교체</td><td>SGD, (노트북에선) Freeze 예시 존재 + 증강 적용/미적용 비교</td><td>‘내 데이터’를 ImageFolder로 다루는 방법 + 전이학습 기본형</td></tr><tr><td>02 ResNet18</td><td>CIFAR-10 (50k/10k, 32×32, 10클래스)</td><td>가능하지만 목표가 전이학습/파인튜닝 흐름 → pretrained 사용</td><td>ResNet18(weights=IMAGENET1K_V1) + fc를 10클래스로 교체</td><td>SGD + weight_decay + CosineAnnealingLR(스케줄링)</td><td>‘가볍고 빠른’ ResNet18 + 코사인 스케줄로 안정 수렴</td></tr><tr><td>03 VGG19 실무형</td><td>CIFAR-10 (32×32) + (노트북에서) 128→112로 리사이즈/크롭</td><td>가능하지만 VGG는 파라미터가 커서 전이학습이 더 합리적</td><td>VGG19_BN(weights=IMAGENET1K_V1) + classifier[6]를 10클래스로 교체</td><td>Label Smoothing + SGD(nesterov) + OneCycleLR + Mixed Precision(GradScaler)</td><td>‘실무 최적화 패키지’(강한 증강/스케줄/AMP) 모음</td></tr></table>
+</section>
+
+<section class="card" id="01-custom-dl-imagefolder-vgg19-bn">
+  <h2>01) Custom DL + ImageFolder 전이학습(VGG19_BN)</h2>
+
+  <div class="callout"><div class="icon cyan">🧩</div><div>
+    <p class="small"><b>이 노트북의 “차별점 3개”</b> (여기만 봐도 다른 코드처럼 느껴지게)</p>
+  </div></div>
+  <div class="keybox"><div class='kcard'><h4>데이터</h4><p class='small'>ImageFolder로 &#x27;내 폴더 데이터&#x27;를 불러오는 방식</p></div><div class='kcard'><h4>실험 포인트</h4><p class='small'>증강 적용(train_transform) vs 미적용(test_transform) 비교</p></div><div class='kcard'><h4>학습 전략</h4><p class='small'>VGG19_BN pretrained + classifier를 2클래스로 교체 (전이학습 기본형)</p></div></div>
+
+  <hr class="sep"/>
+  <h3>1) 데이터가 뭐고, 스크래치가 적합한가?</h3>
+  <div class="split2">
+    <div class="panel">
+      <p class="small"><b>데이터 코드(원문)</b></p>
+      <pre class='code'><code># 데이터셋 정의
+# 훈련
+# 훈련1(데이터 증강 적용)
+train_data1 = datasets.ImageFolder(train_dir, transform=train_transform)
+# 훈련2(미적용)
+train_data2 = datasets.ImageFolder(train_dir, transform=test_transform)
+
+# 검증
+test_data = datasets.ImageFolder(test_dir, transform=test_transform)</code></pre>
+    </div>
+    <div class="panel">
+      <p class="small"><b>판단(중학생 버전)</b></p>
+      <ul class="small">
+        <li><b>데이터가 작거나 특수하면</b>: 처음부터 학습(스크래치)은 과적합 위험이 커요 → 전이학습이 안전</li>
+        <li><b>데이터가 충분히 크면</b>: 스크래치도 가능하지만, 목적이 “전이학습 비교”면 pretrained가 더 적합</li>
+        <li><b>이 노트북은</b>: 위 코드/설정 때문에 전이학습/파인튜닝 방식으로 설계되어 있어요</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="sep"/>
+  <h3>2) 전처리/증강이 어떻게 다르지?</h3>
+  <div class="callout"><div class="icon warn">🧪</div><div>
+    <p class="small"><b>포인트</b>: 01은 “증강 적용/미적용 비교”, 03은 “실무형 강한 증강”, 02는 기본 증강 + 안정 수렴 중심입니다.</p>
+  </div></div>
+  <pre class='code'><code># 검증: 크기 조절, 중앙부분 크롭, 텐서 변환, 전규화
+
+test_transform = transforms.Compose([
+    transforms.Resize(256),
+    transforms.CenterCrop(224),
+    transforms.ToTensor(),
+    transforms.Normalize((0.5, 0.5, 0.5),(0.5, 0.5, 0.5))
+])
+
+# 훈련: 데이터 증강 기법 추가
+train_transform = transforms.Compose([
+    transforms.RandomResizedCrop(224),
+    transforms.RandomHorizontalFlip(),
+    # 텐서 변환은 반드시 정규화 이전에
+    # 텐서로 변환되면 value=0(검은색)~1 사이에서 실행됨
+    transforms.ToTensor(),
+    transforms.RandomErasing(p=0.5, scale=(0.02, 0.33),
+                             ratio=(0.3, 3.3), value=0, inplace=False),
+    # p: 학률 / scale: 삭제 영역 비율 / ratio: 가로/세로 비율
+    # value: 지워진 영역 채울 값 / inplace: 원본 수정 여부
+    # 정규화 마지막에
+    transforms.Normalize((0.5, 0.5, 0.5),(0.5, 0.5, 0.5))
+])</code></pre>
+
+  <hr class="sep"/>
+  <h3>3) 모델은 뭐고, 어디를 바꿨지?</h3>
+  <pre class='code'><code>from torchvision import models
+
+net = models.vgg19_bn(pretrained=True)
+
+# 난수고정
+torch_seed()
+
+# fc 출력 len(classes) = 2
+in_features = net.classifier[6].in_features
+net.classifier[6] = nn.Linear(in_features, 2)</code></pre>
+
+  <hr class="sep"/>
+  <h3>4) 학습 전략(Optimizer/Scheduler)이 왜 다르지?</h3>
+  <p class='small muted'>노트북에서 해당 패턴의 코드를 찾지 못했습니다(다른 셀에 흩어져 있을 수 있어요).</p>
+
+  <details style="margin-top:12px;border:1px solid rgba(122,162,255,.22);border-radius:16px;background:rgba(7,11,21,.45);padding:10px 12px">
+    <summary style="cursor:pointer;color:#dbe6ff;font-weight:700">노트북에 Freeze 코드가 있는지 확인(있으면 원문 표시)</summary>
+    <pre class='code'><code>from torchvision import models
+
+net = models.vgg19_bn(pretrained=True)
+# [변경점 1] 모든 파라미터의 경사 계산을 동결(가중치 동결)
+for params in net.parameters():
+    params.requires_grad = False
+
+# 난수고정
+torch.seed()
+
+# 최종 노드 출력 2 (이진 분류) 변경
+# 이 노드에 대해서만 경사 계산 수행
+in_features = net.classifier[6].in_features
+net.classifier[6] = nn.Linear(in_features, 2)
+# AdaptiveAvgPool2d 함수 제거
+net.avgpool = nn.Identity()
+
+net = net.to(device)
+# 학습률
+lr = 0.001
+
+# 손실함수
+criterion = nn.CrossEntropyLoss()
+
+# 최적화 함수 정의
+# [변경점 2] 최적화함수에 수정할 파라미터를 최종 노드로 제한
+optimizer = optim.SGD(net.classifier[6].parameters(), lr=lr, momentum=0.9)
+
+history = np.zeros((0,5))</code></pre>
+    <p class="small muted">Freeze 코드가 없는 노트북은 기본적으로 <b>모든 파라미터 학습</b>(Full)로 쓰는 경우가 많습니다. 대신 스케줄러/정규화로 안정성을 잡습니다.</p>
+  </details>
+
+</section>
+
+<section class="card" id="02-cifar-10-resnet18">
+  <h2>02) CIFAR-10 ResNet18 파인튜닝</h2>
+
+  <div class="callout"><div class="icon cyan">🧩</div><div>
+    <p class="small"><b>이 노트북의 “차별점 3개”</b> (여기만 봐도 다른 코드처럼 느껴지게)</p>
+  </div></div>
+  <div class="keybox"><div class='kcard'><h4>모델</h4><p class='small'>ResNet18은 가볍고 빠르며 32×32에서도 잘 동작</p></div><div class='kcard'><h4>학습률 전략</h4><p class='small'>CosineAnnealingLR로 lr을 부드럽게 감소</p></div><div class='kcard'><h4>정규화</h4><p class='small'>weight_decay로 과적합 억제(L2 정규화)</p></div></div>
+
+  <hr class="sep"/>
+  <h3>1) 데이터가 뭐고, 스크래치가 적합한가?</h3>
+  <div class="split2">
+    <div class="panel">
+      <p class="small"><b>데이터 코드(원문)</b></p>
+      <pre class='code'><code># CIFAR-10 데이터셋 로드
+def load_data(batch_size=64):
+    train_transform, val_transform = get_transforms()
+
+
+    # 훈련 데이터
+    train_dataset = torchvision.datasets.CIFAR10(
+        root=&#x27;./data&#x27;,
+        train=True,
+        download=True,
+        transform=train_transform
+    )
+
+
+    # 검증 데이터
+    val_dataset = torchvision.datasets.CIFAR10(
+        root=&#x27;./data&#x27;,
+        train=False,
+        download=True,
+        transform=val_transform
+    )
+
+
+    # 데이터 로더 생성
+    train_loader = DataLoader(
+        train_dataset,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=2,
+        pin_memory=True  # GPU 전송 속도 향상
+    )
+
+
+    val_loader = DataLoader(
+        val_dataset,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=2,
+        pin_memory=True
+    )
+
+
+    return train_loader, val_loader
+
+
+# 데이터 로드
+train_loader, val_loader = load_data(batch_size=64)
+
+
+# 클래스 이름
+class_names = [&#x27;airplane&#x27;, &#x27;automobile&#x27;, &#x27;bird&#x27;, &#x27;cat&#x27;, &#x27;deer&#x27;,
+               &#x27;dog&#x27;, &#x27;frog&#x27;, &#x27;horse&#x27;, &#x27;ship&#x27;, &#x27;truck&#x27;]
+
+
+print(f&#x27;훈련 데이터: {len(train_loader.dataset)}개&#x27;)
+print(f&#x27;검증 데이터: {len(val_loader.dataset)}개&#x27;)
+print(f&#x27;배치 크기: {train_loader.batch_size}&#x27;)</code></pre>
+    </div>
+    <div class="panel">
+      <p class="small"><b>판단(중학생 버전)</b></p>
+      <ul class="small">
+        <li><b>데이터가 작거나 특수하면</b>: 처음부터 학습(스크래치)은 과적합 위험이 커요 → 전이학습이 안전</li>
+        <li><b>데이터가 충분히 크면</b>: 스크래치도 가능하지만, 목적이 “전이학습 비교”면 pretrained가 더 적합</li>
+        <li><b>이 노트북은</b>: 위 코드/설정 때문에 전이학습/파인튜닝 방식으로 설계되어 있어요</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="sep"/>
+  <h3>2) 전처리/증강이 어떻게 다르지?</h3>
+  <div class="callout"><div class="icon warn">🧪</div><div>
+    <p class="small"><b>포인트</b>: 01은 “증강 적용/미적용 비교”, 03은 “실무형 강한 증강”, 02는 기본 증강 + 안정 수렴 중심입니다.</p>
+  </div></div>
+  <pre class='code'><code># 데이터 변환 정의
+def get_transforms():
+  # 훈련 데이터 변환(데이터 증강)
+  train_transform = transforms.Compose([
+      transforms.Resize(128), # 크기 고정
+      transforms.RandomCrop(112),
+      transforms.RandomHorizontalFlip(p=0.5), # 50% 확률로 좌우 반전
+      transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2), # 색상변환
+
+
+      transforms.ToTensor(),
+      transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+
+
+  ])
+  # 검증 데이터 변환(증강 없어야 함)
+  val_transform = transforms.Compose([
+      transforms.Resize(112), # 크기 고정 (가로 세로 비율 유지) Resize((112,112))
+      # transforms.CenterCrop(112) : 중앙에 위치 112*112 로 잘라서 만들어줘 (정보손실 가능)
+
+
+      transforms.ToTensor(),
+      transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+
+
+  ])
+
+
+  return train_transform, val_transform</code></pre>
+
+  <hr class="sep"/>
+  <h3>3) 모델은 뭐고, 어디를 바꿨지?</h3>
+  <pre class='code'><code># 원래 resnet 은 imagenet 에 사용된 사전학습된 가중치임
+# 이 모델은 1000개 클래스 분류하는 분류기
+# 우리 모델에 맞춤 서비스 하기 위해 마지막 fc layer (분류기 classfier) 10개 클래스로 변경 작업 필요
+
+def create_model(num_classes=10, pretrained=True):
+    # 사전 학습된 ResNet-18 모델 로드
+    # pretrain=True면 학습된 가중치 불러오기
+    model = models.resnet18(weights=&#x27;IMAGENET1K_V1&#x27; if pretrained else None)
+
+    # 마지막 fc(분류기) 입력 차원 확인
+    num_features = model.fc.in_features
+    # print(num_features)  # 512
+
+    num_classes = 10
+
+    # nn.Linear(in_features=num_features, out_features=num_classes, bias=True)
+    model.fc = nn.Linear(num_features, num_classes)
+    # print(model.fc)
+    # Linear(in_features=512, out_features=10, bias=True)
+
+    model = model.to(device)
+    return model</code></pre>
+
+  <hr class="sep"/>
+  <h3>4) 학습 전략(Optimizer/Scheduler)이 왜 다르지?</h3>
+  <pre class='code'><code># 필수 라이브러리 임포트
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.optim.lr_scheduler import CosineAnnealingLR, ReduceLROnPlateau
+from torch.utils.data import DataLoader
+import torchvision
+import torchvision.transforms as transforms
+import torchvision.models as models
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix, classification_report
+import seaborn as sns
+from tqdm import tqdm
+import time
+import copy
+
+# 한글 폰트 설정 (Colab)
+plt.rcParams[&#x27;font.family&#x27;] = &#x27;DejaVu Sans&#x27;
+plt.rcParams[&#x27;axes.unicode_minus&#x27;] = False
+
+# 재현성을 위한 시드 고정
+def set_seed(seed=42):
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    np.random.seed(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+
+set_seed(42)
+
+# GPU 사용 가능 여부 확인
+device = torch.device(&#x27;cuda&#x27; if torch.cuda.is_available() else &#x27;cpu&#x27;)
+print(f&#x27;사용 디바이스: {device}&#x27;)
+if torch.cuda.is_available():
+    print(f&#x27;GPU 이름: {torch.cuda.get_device_name(0)}&#x27;)</code></pre>
+
+  <details style="margin-top:12px;border:1px solid rgba(122,162,255,.22);border-radius:16px;background:rgba(7,11,21,.45);padding:10px 12px">
+    <summary style="cursor:pointer;color:#dbe6ff;font-weight:700">노트북에 Freeze 코드가 있는지 확인(있으면 원문 표시)</summary>
+    <p class='small muted'>노트북에서 해당 패턴의 코드를 찾지 못했습니다(다른 셀에 흩어져 있을 수 있어요).</p>
+    <p class="small muted">Freeze 코드가 없는 노트북은 기본적으로 <b>모든 파라미터 학습</b>(Full)로 쓰는 경우가 많습니다. 대신 스케줄러/정규화로 안정성을 잡습니다.</p>
+  </details>
+
+</section>
+
+<section class="card" id="03-cifar-10-vgg19-bn">
+  <h2>03) CIFAR-10 VGG19_BN 파인튜닝(실무형)</h2>
+
+  <div class="callout"><div class="icon cyan">🧩</div><div>
+    <p class="small"><b>이 노트북의 “차별점 3개”</b> (여기만 봐도 다른 코드처럼 느껴지게)</p>
+  </div></div>
+  <div class="keybox"><div class='kcard'><h4>증강(실무형)</h4><p class='small'>Resize/RandomResizedCrop/ColorJitter/RandomErasing 등 ‘강한 증강’</p></div><div class='kcard'><h4>학습률 전략</h4><p class='small'>OneCycleLR + warm-up/annealing</p></div><div class='kcard'><h4>실무 최적화</h4><p class='small'>Label smoothing + Nesterov + Mixed Precision(GradScaler)</p></div></div>
+
+  <hr class="sep"/>
+  <h3>1) 데이터가 뭐고, 스크래치가 적합한가?</h3>
+  <div class="split2">
+    <div class="panel">
+      <p class="small"><b>데이터 코드(원문)</b></p>
+      <pre class='code'><code># 고급 데이터 증강
+def get_advanced_transforms():
+    &quot;&quot;&quot;
+    고급 데이터 증강 파이프라인
+    실무에서 사용되는 다양한 증강 기법 적용
+    &quot;&quot;&quot;
+    # 훈련 데이터 변환
+    train_transform = transforms.Compose([
+        transforms.Resize(128), # img 128*128 resize
+        transforms.RandomResizedCrop(112, scale=(0.8, 1.0)),
+        # 랜덤 크롭, 112*112 80%-100% 크기로 resize
+        transforms.RandomHorizontalFlip(p=0.5),
+        # 50% 확률로 좌우반전
+        transforms.RandomRotation(degrees=15),  # 랜덤 회전(-15~+15도)
+        transforms.ColorJitter(
+            brightness=0.3,  # 밝기 변화(+-30%)
+            contrast=0.3,    # 대비 변화(+-30%)
+            saturation=0.3,  # 채도 변화(+-30%)
+            hue=0.1          # 색조 변화(+-10%)
+        ),
+        transforms.ToTensor(), # PIL &gt;&gt; [0,1] 텐서로 변환
+        transforms.Normalize(
+            mean=[0.485, 0.456, 0.406],
+            std=[0.229, 0.224, 0.225]
+        ),
+        transforms.RandomErasing(p=0.3, scale=(0.02, 0.15))
+        # CutOut 효과, 30% 확률로 2-15% 영역 지움
+    ])
+
+    # 검증 데이터 변환 (증강 없음)
+    val_transform = transforms.Compose([
+        transforms.Resize(112),
+        transforms.ToTensor(),
+        transforms.Normalize(
+            mean=[0.485, 0.456, 0.406],
+            std=[0.229, 0.224, 0.225]
+        )
+    ])
+
+    return train_transform, val_transform
+
+# 데이터 로드 함수
+def load_data(batch_size=50, num_workers=4):
+    &quot;&quot;&quot;
+    CIFAR-10 데이터셋 로드
+
+    Args:
+        batch_size: 배치 크기
+        num_workers: 데이터 로딩 워커 수
+    &quot;&quot;&quot;
+    train_transform, val_transform = get_advanced_transforms()
+
+    # 데이터셋 생성
+    train_dataset = torchvision.datasets.CIFAR10(
+        root=&#x27;./data&#x27;,
+        train=True,
+        download=True,
+        transform=train_transform
+    )
+
+    val_dataset = torchvision.datasets.CIFAR10(
+        root=&#x27;./data&#x27;,
+        train=False,
+        download=True,
+        transform=val_transform
+    )
+
+    # 데이터 로더 생성
+    train_loader = DataLoader(
+        train_dataset,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=num_workers,
+        pin_memory=True,  # GPU 전송 속도 향상
+        persistent_workers=True  # 워커 재사용(속도 향상)
+    )
+
+    val_loader = DataLoader(
+        val_dataset,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        pin_memory=True,
+        persistent_workers=True
+    )
+
+    return train_loader, val_loader, train_dataset, val_dataset
+
+# 데이터 로드
+train_loader, val_loader, train_dataset, val_dataset = load_data(
+    batch_size=50,
+    num_workers=2
+)
+
+# 클래스 이름
+class_names = [&#x27;airplane&#x27;, &#x27;automobile&#x27;, &#x27;bird&#x27;, &#x27;cat&#x27;, &#x27;deer&#x27;,
+               &#x27;dog&#x27;, &#x27;frog&#x27;, &#x27;horse&#x27;, &#x27;ship&#x27;, &#x27;truck&#x27;]
+
+print(&#x27;\n데이터 로드 완료&#x27;)
+print(&#x27;=&#x27; * 60)
+print(f&#x27;훈련 데이터: {len(train_dataset):,}개&#x27;)
+print(f&#x27;검증 데이터: {len(val_dataset):,}개&#x27;)
+print(f&#x27;배치 크기: {train_loader.batch_size}&#x27;)
+print(f&#x27;배치 수 (훈련): {len(train_loader)}&#x27;)
+print(f&#x27;배치 수 (검증): {len(val_loader)}&#x27;)
+print(f&#x27;클래스 수: {len(class_names)}&#x27;)
+print(&#x27;=&#x27; * 60)</code></pre>
+    </div>
+    <div class="panel">
+      <p class="small"><b>판단(중학생 버전)</b></p>
+      <ul class="small">
+        <li><b>데이터가 작거나 특수하면</b>: 처음부터 학습(스크래치)은 과적합 위험이 커요 → 전이학습이 안전</li>
+        <li><b>데이터가 충분히 크면</b>: 스크래치도 가능하지만, 목적이 “전이학습 비교”면 pretrained가 더 적합</li>
+        <li><b>이 노트북은</b>: 위 코드/설정 때문에 전이학습/파인튜닝 방식으로 설계되어 있어요</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="sep"/>
+  <h3>2) 전처리/증강이 어떻게 다르지?</h3>
+  <div class="callout"><div class="icon warn">🧪</div><div>
+    <p class="small"><b>포인트</b>: 01은 “증강 적용/미적용 비교”, 03은 “실무형 강한 증강”, 02는 기본 증강 + 안정 수렴 중심입니다.</p>
+  </div></div>
+  <pre class='code'><code># 고급 데이터 증강
+def get_advanced_transforms():
+    &quot;&quot;&quot;
+    고급 데이터 증강 파이프라인
+    실무에서 사용되는 다양한 증강 기법 적용
+    &quot;&quot;&quot;
+    # 훈련 데이터 변환
+    train_transform = transforms.Compose([
+        transforms.Resize(128), # img 128*128 resize
+        transforms.RandomResizedCrop(112, scale=(0.8, 1.0)),
+        # 랜덤 크롭, 112*112 80%-100% 크기로 resize
+        transforms.RandomHorizontalFlip(p=0.5),
+        # 50% 확률로 좌우반전
+        transforms.RandomRotation(degrees=15),  # 랜덤 회전(-15~+15도)
+        transforms.ColorJitter(
+            brightness=0.3,  # 밝기 변화(+-30%)
+            contrast=0.3,    # 대비 변화(+-30%)
+            saturation=0.3,  # 채도 변화(+-30%)
+            hue=0.1          # 색조 변화(+-10%)
+        ),
+        transforms.ToTensor(), # PIL &gt;&gt; [0,1] 텐서로 변환
+        transforms.Normalize(
+            mean=[0.485, 0.456, 0.406],
+            std=[0.229, 0.224, 0.225]
+        ),
+        transforms.RandomErasing(p=0.3, scale=(0.02, 0.15))
+        # CutOut 효과, 30% 확률로 2-15% 영역 지움
+    ])
+
+    # 검증 데이터 변환 (증강 없음)
+    val_transform = transforms.Compose([
+        transforms.Resize(112),
+        transforms.ToTensor(),
+        transforms.Normalize(
+            mean=[0.485, 0.456, 0.406],
+            std=[0.229, 0.224, 0.225]
+        )
+    ])
+
+    return train_transform, val_transform
+
+# 데이터 로드 함수
+def load_data(batch_size=50, num_workers=4):
+    &quot;&quot;&quot;
+    CIFAR-10 데이터셋 로드
+
+    Args:
+        batch_size: 배치 크기
+        num_workers: 데이터 로딩 워커 수
+    &quot;&quot;&quot;
+    train_transform, val_transform = get_advanced_transforms()
+
+    # 데이터셋 생성
+    train_dataset = torchvision.datasets.CIFAR10(
+        root=&#x27;./data&#x27;,
+        train=True,
+        download=True,
+        transform=train_transform
+    )
+
+    val_dataset = torchvision.datasets.CIFAR10(
+        root=&#x27;./data&#x27;,
+        train=False,
+        download=True,
+        transform=val_transform
+    )
+
+    # 데이터 로더 생성
+    train_loader = DataLoader(
+        train_dataset,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=num_workers,
+        pin_memory=True,  # GPU 전송 속도 향상
+        persistent_workers=True  # 워커 재사용(속도 향상)
+    )
+
+    val_loader = DataLoader(
+        val_dataset,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        pin_memory=True,
+        persistent_workers=True
+    )
+
+    return train_loader, val_loader, train_dataset, val_dataset
+
+# 데이터 로드
+train_loader, val_loader, train_dataset, val_dataset = load_data(
+    batch_size=50,
+    num_workers=2
+)
+
+# 클래스 이름
+class_names = [&#x27;airplane&#x27;, &#x27;automobile&#x27;, &#x27;bird&#x27;, &#x27;cat&#x27;, &#x27;deer&#x27;,
+               &#x27;dog&#x27;, &#x27;frog&#x27;, &#x27;horse&#x27;, &#x27;ship&#x27;, &#x27;truck&#x27;]
+
+print(&#x27;\n데이터 로드 완료&#x27;)
+print(&#x27;=&#x27; * 60)
+print(f&#x27;훈련 데이터: {len(train_dataset):,}개&#x27;)
+print(f&#x27;검증 데이터: {len(val_dataset):,}개&#x27;)
+print(f&#x27;배치 크기: {train_loader.batch_size}&#x27;)
+print(f&#x27;배치 수 (훈련): {len(train_loader)}&#x27;)
+print(f&#x27;배치 수 (검증): {len(val_loader)}&#x27;)
+print(f&#x27;클래스 수: {len(class_names)}&#x27;)
+print(&#x27;=&#x27; * 60)</code></pre>
+
+  <hr class="sep"/>
+  <h3>3) 모델은 뭐고, 어디를 바꿨지?</h3>
+  <pre class='code'><code># VGG-19-BN 모델 생성
+def create_vgg19_bn(num_classes=10, pretrained=True):
+    &quot;&quot;&quot;
+    VGG-19-BN 모델 생성 및 수정
+
+    Args:
+        num_classes: 출력 클래스 수
+        pretrained: 사전 학습 가중치 사용 여부
+    &quot;&quot;&quot;
+    # 사전 학습된 VGG-19-BN 불러오기
+    if pretrained:
+        model = models.vgg19_bn(weights=&#x27;IMAGENET1K_V1&#x27;)
+    else:
+        model = models.vgg19_bn(weights=None)
+
+    # classifier 구조 출력
+    print(&#x27;원본 Classifier 구조:&#x27;)
+    print(model.classifier)
+    print(&#x27;\n&#x27; + &#x27;=&#x27; * 60)
+
+    # 마지막 FC 레이어 교체
+    num_features = model.classifier[6].in_features
+    print(f&#x27;원본 FC 레이어: Linear(in_features={num_features}, out_features=1000)&#x27;)
+
+    # CIFAR-10의 10개 클래스에 맞게 교체
+    model.classifier[6] = nn.Linear(num_features, num_classes)
+    print(f&#x27;교체된 FC 레이어: Linear(in_features={num_features}, out_features={num_classes})&#x27;)
+    print(&#x27;=&#x27; * 60)
+
+    # 모델을 GPU로 이동
+    model = model.to(device)
+
+    return model
+
+# 모델 생성
+model = create_vgg19_bn(num_classes=10, pretrained=True)
+
+# 모델 파라미터 통계
+def count_parameters(model):
+    &quot;&quot;&quot;모델의 파라미터 수 계산&quot;&quot;&quot;
+    total = sum(p.numel() for p in model.parameters())
+    trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    return total, trainable
+
+total_params, trainable_params = count_parameters(model)
+
+print(&#x27;\n모델 파라미터 통계:&#x27;)
+print(&#x27;=&#x27; * 60)
+print(f&#x27;총 파라미터 수: {total_params:,}&#x27;)
+print(f&#x27;학습 가능한 파라미터 수: {trainable_params:,}&#x27;)
+print(f&#x27;모델 크기: {total_params * 4 / 1024 / 1024:.2f} MB (float32 기준)&#x27;)
+print(&#x27;=&#x27; * 60)</code></pre>
+
+  <hr class="sep"/>
+  <h3>4) 학습 전략(Optimizer/Scheduler)이 왜 다르지?</h3>
+  <pre class='code'><code># 라이브러리 임포트
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.optim.lr_scheduler import OneCycleLR
+from torch.utils.data import DataLoader
+from torch.cuda.amp import autocast, GradScaler  # Mixed Precision Training
+from torch.utils.tensorboard import SummaryWriter
+
+import torchvision
+import torchvision.transforms as transforms
+import torchvision.models as models
+
+import numpy as np
+import matplotlib.pyplot as plt
+from PIL import Image
+import cv2
+from sklearn.metrics import confusion_matrix, classification_report
+import seaborn as sns
+from tqdm import tqdm
+import time
+import os
+from datetime import datetime
+
+# Grad-CAM
+from pytorch_grad_cam import GradCAM
+from pytorch_grad_cam.utils.image import show_cam_on_image
+from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
+
+print(&#x27;라이브러리 임포트 완료!&#x27;)</code></pre>
+
+  <details style="margin-top:12px;border:1px solid rgba(122,162,255,.22);border-radius:16px;background:rgba(7,11,21,.45);padding:10px 12px">
+    <summary style="cursor:pointer;color:#dbe6ff;font-weight:700">노트북에 Freeze 코드가 있는지 확인(있으면 원문 표시)</summary>
+    <p class='small muted'>노트북에서 해당 패턴의 코드를 찾지 못했습니다(다른 셀에 흩어져 있을 수 있어요).</p>
+    <p class="small muted">Freeze 코드가 없는 노트북은 기본적으로 <b>모든 파라미터 학습</b>(Full)로 쓰는 경우가 많습니다. 대신 스케줄러/정규화로 안정성을 잡습니다.</p>
+  </details>
+
+</section>
+
+    <footer>단일 HTML(내장 CSS) · GitHub Pages 업로드 가능</footer>
+  </main>
+</div>
+</div>
+</body></html>
