@@ -78,7 +78,36 @@ print(mean_over_feat)
 
 ---
 
-## 6) Boolean Indexing — 조건 필터링(전처리)
+
+---
+
+## 6) reshape / transpose — 차원(축) 조작의 기본
+```python
+# reshape: 원소 개수는 유지하고, 모양(shape)만 바꿈
+x = np.arange(12)          # (12,)
+x2 = x.reshape(3, 4)       # (3,4)
+
+# -1: 남는 차원 자동 계산
+x3 = x.reshape(2, -1)      # (2,6)
+
+print(x2.shape, x3.shape)
+
+# transpose / .T : 축 순서 바꾸기 (2D 전치)
+A = np.array([[1, 2, 3],
+              [4, 5, 6]])  # (2,3)
+
+AT = A.T                   # (3,2)
+print(AT.shape)
+
+# N차원 축 재배치
+B = np.random.randn(2, 3, 4)        # (N, C, W) 같은 예시
+B2 = np.transpose(B, (0, 2, 1))      # (2, 4, 3)
+print(B2.shape)
+```
+- 왜 핵심: 딥러닝 데이터는 결국 **차원 싸움**이라서 (N,C,H,W) 정리/변환이 필수
+- 실무 팁: `transpose` 후 `reshape`는 연속 메모리 문제가 생길 수 있어, PyTorch에선 보통 `reshape()`가 더 안전
+
+## 7) Boolean Indexing — 조건 필터링(전처리)
 ```python
 data = np.array([10, -5, 30, -2, 15])
 
@@ -89,7 +118,7 @@ print(filtered)
 
 ---
 
-## 7) Matplotlib — 학습/데이터를 진단하는 최소선
+## 8) Matplotlib — 학습/데이터를 진단하는 최소선
 ```python
 loss = [1.0, 0.8, 0.65, 0.55, 0.52]
 
@@ -104,3 +133,4 @@ plt.show()
 - 왜 핵심: 시각화는 “그림”이 아니라 **진단(디버깅)** 도구 (Loss 곡선 해석의 기본)
 
 ---
+
