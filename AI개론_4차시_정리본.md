@@ -160,9 +160,9 @@ X ──(Forward)──> Y_hat ──(Loss)──> L
 - 보폭 = 학습률(Learning Rate)
 
 ### “비유 → 수식”
-\[
+$$
 W \leftarrow W - lr \cdot \frac{\partial L}{\partial W}
-\]
+$$
 
 - \(lr\)이 너무 크면: **오버슈팅(발산)**
 - \(lr\)이 너무 작으면: **너무 느림(수렴 지연)**
