@@ -323,7 +323,7 @@ Test/Val 정보를 학습에 섞어버리는 것.
 
 ### ROC-AUC
 - 임계값(threshold)을 바꿔가며
-- TPR(Recall) vs FPR을 그린 ROC curve 아래 면적
+- TPR(Recall=TP/(TP+FN)) vs FPR(FP/(FP+TN))을 그린 ROC curve 아래 면적
 - 0.5: 랜덤 / 1.0: 완벽
 
 ---
