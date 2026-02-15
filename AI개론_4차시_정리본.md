@@ -1,4 +1,4 @@
-# 📘 AI응용 4차시 교재급 정리본 (PDF 이론 100% 반영 + 코드-이론 1:1 매핑)
+# 📘 AI개론 4차시 정리본
 **주제:** 인공지능 기초 — 신경망, 역전파(Backprop), 활성화 함수, 최적화, 데이터 분할/누수, 성능평가  
 **기준:** 4차시 PDF 전 범위 + 4차시 ipynb(01/02/03) 핵심 코드만 선별하여 “왜/어떻게/어디에 쓰는지”까지 설명
 
@@ -187,15 +187,22 @@ $$[
 L = L(\hat{y}), \quad \hat{y} = f(W)
 ]$$
 
-그럼:
+텍스트 표현:
 
-$$[
+    dL/dW = (dL/dy_hat) * (dy_hat/dW)
+
+LaTeX 표현 (수식 지원 환경):
+
+$$
+\begin{aligned}
 \frac{\partial L}{\partial W}
-=
+&=
 \frac{\partial L}{\partial \hat{y}}
 \cdot
 \frac{\partial \hat{y}}{\partial W}
-]$$
+\end{aligned}
+$$
+
 
 즉, **복잡한 미분을 조각으로 나누고 곱해서 연결**한다.
 
